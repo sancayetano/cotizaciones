@@ -1,0 +1,36 @@
+<!-- index.html simplificado para empezar -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cambios</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .moneda { background: #f0f0f0; padding: 15px; margin: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>💱 Cambios Nortecambios</h1>
+    <div id="monedas">Cargando...</div>
+    
+    <script>
+        // Datos de prueba - luego cambiarás por el backend real
+        const monedas = [
+            {codigo: 'USD', nombre: 'Dólar Americano', valor: '6.560,00', tendencia: 'up'},
+            {codigo: 'BRL', nombre: 'Real Brasileño', valor: '1.250,00', tendencia: 'down'}
+        ];
+        
+        function mostrarMonedas() {
+            let html = '';
+            monedas.forEach(m => {
+                html += `<div class="moneda">
+                    <h3>${m.nombre} (${m.codigo})</h3>
+                    <p><strong>${m.valor}</strong> ${m.tendencia === 'up' ? '📈' : '📉'}</p>
+                </div>`;
+            });
+            document.getElementById('monedas').innerHTML = html;
+        }
+        
+        mostrarMonedas();
+    </script>
+</body>
+</html>
