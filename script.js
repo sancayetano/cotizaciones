@@ -7,39 +7,32 @@ const datosEjemplo = {
     "USD": {
         "compra": "6.820",
         "venta": "6.850",
-        "tendencia": "subiendo",
         "nombre": "Dólar Americano",
-        "bandera": "🇺🇸",
-        "actualizado": new Date().toLocaleTimeString('es-PY')
+        "bandera": "🇺🇸"
     },
     "BRL": {
         "compra": "1.310",
         "venta": "1.320",
-        "tendencia": "bajando", 
         "nombre": "Real Brasileño",
-        "bandera": "🇧🇷",
-        "actualizado": new Date().toLocaleTimeString('es-PY')
+        "bandera": "🇧🇷"
     },
-    "BRL•USD": {
+    "BRL-USD": {
         "compra": "5,18",
         "venta": "5,22",
-        "tendencia": "estable",
         "nombre": "Real Paralelo",
-        "bandera": "🇧🇷🇺🇸",
-        "actualizado": new Date().toLocaleTimeString('es-PY')
+        "bandera": "🇧🇷🇺🇸"
     }
 };
 
 // Elementos del DOM
 const monedasContainer = document.getElementById('monedas-container');
-const errorMensaje = document.getElementById('error-mensaje');
 const refreshBtn = document.getElementById('refresh-btn');
 const actualizacionTexto = document.getElementById('actualizacion-texto');
 
 // Función para crear una fila de moneda
 function crearFilaMoneda(codigo, datos) {
     return `
-        <div class="moneda-card ${datos.tendencia}">
+        <div class="moneda-card">
             <div class="moneda-info">
                 <div class="bandera">${datos.bandera}</div>
                 <div class="moneda-texto">
@@ -49,16 +42,6 @@ function crearFilaMoneda(codigo, datos) {
             </div>
             <div class="valor-compra">${datos.compra}</div>
             <div class="valor-venta">${datos.venta}</div>
-            <div class="tendencia-container">
-                <div class="tendencia ${datos.tendencia}">
-                    <span class="material-icons">
-                        ${datos.tendencia === 'subiendo' ? 'arrow_upward' : 
-                          datos.tendencia === 'bajando' ? 'arrow_downward' : 'remove'}
-                    </span>
-                    ${datos.tendencia === 'subiendo' ? 'Subiendo' : 
-                      datos.tendencia === 'bajando' ? 'Bajando' : 'Estable'}
-                </div>
-            </div>
         </div>
     `;
 }
@@ -67,8 +50,8 @@ function crearFilaMoneda(codigo, datos) {
 function mostrarMonedas(datos) {
     let html = '';
     
-    // Orden específico: USD, BRL, BRL•USD
-    const orden = ['USD', 'BRL', 'BRL•USD'];
+    // Orden específico: USD, BRL, BRL-USD
+    const orden = ['USD', 'BRL', 'BRL-USD'];
     
     for (const codigo of orden) {
         if (datos[codigo]) {
@@ -78,78 +61,71 @@ function mostrarMonedas(datos) {
     
     monedasContainer.innerHTML = html;
     actualizacionTexto.textContent = `Última actualización: ${new Date().toLocaleTimeString('es-PY')}`;
-    errorMensaje.style.display = 'none';
 }
 
-// Función para simular variación de precios
+// Función para variar precios ligeramente
 function variarPrecio(precioStr) {
-    const precio = parseFloat(precioStr.replace('.', '').replace(',', '.'));
-    const variacion = (Math.random() - 0.5) * 10; // ±5
-    const nuevoPrecio = Math.max(0, precio + variacion);
+    const tieneComa = precioStr.includes(',');
+    const tienePunto = precioStr.includes('.');
     
-    if (precioStr.includes(',')) {
-        return nuevoPrecio.toFixed(2).replace('.', ',');
+    // Convertir a número
+    let precio;
+    if (tieneComa) {
+        precio = parseFloat(precioStr.replace('.', '').replace(',', '.'));
+    } else if (tienePunto) {
+        precio = parseFloat(precioStr.replace('.', ''));
+    } else {
+        precio = parseFloat(precioStr);
     }
-    return nuevoPrecio.toFixed(0);
+    
+    // Variación pequeña (±0.5% del valor)
+    const variacion = precio * (Math.random() - 0.5) * 0.005;
+    const nuevoPrecio = Math.max(1, precio + variacion);
+    
+    // Formatear de vuelta
+    if (tieneComa) {
+        return nuevoPrecio.toFixed(2).replace('.', ',');
+    } else if (tienePunto && precioStr.includes('.')) {
+        // Si tenía punto como separador de miles (ej: 6.820)
+        return Math.round(nuevoPrecio).toLocaleString('es-PY');
+    }
+    
+    return nuevoPrecio.toFixed(tieneComa ? 2 : 0);
 }
 
 // Función para cargar datos
-function cargarDatosPrueba() {
+function cargarDatos() {
     // Mostrar estado de carga
-    refreshBtn.innerHTML = '<span class="material-icons">autorenew</span> Cargando...';
+    refreshBtn.textContent = 'Cargando...';
     refreshBtn.disabled = true;
     
-    // Simular delay de red (1 segundo)
+    // Simular delay de red
     setTimeout(() => {
         const datosActualizados = JSON.parse(JSON.stringify(datosEjemplo));
         
-        // Variar precios ligeramente (simulación realista)
+        // Variar precios ligeramente
         for (const moneda in datosActualizados) {
             datosActualizados[moneda].compra = variarPrecio(datosActualizados[moneda].compra);
             datosActualizados[moneda].venta = variarPrecio(datosActualizados[moneda].venta);
-            
-            // Determinar tendencia basada en cambio
-            const cambio = Math.random();
-            if (cambio > 0.6) datosActualizados[moneda].tendencia = 'subiendo';
-            else if (cambio < 0.4) datosActualizados[moneda].tendencia = 'bajando';
-            else datosActualizados[moneda].tendencia = 'estable';
-            
-            datosActualizados[moneda].actualizado = new Date().toLocaleTimeString('es-PY');
         }
         
         mostrarMonedas(datosActualizados);
         
         // Restaurar botón
-        refreshBtn.innerHTML = '<span class="material-icons">refresh</span> Actualizar';
+        refreshBtn.textContent = 'Actualizar';
         refreshBtn.disabled = false;
         
-        console.log('✅ Datos actualizados - San Cayetano');
-    }, 1000);
-}
-
-// Función para mostrar error
-function mostrarError(mensaje) {
-    errorMensaje.textContent = `⚠️ ${mensaje}`;
-    errorMensaje.style.display = 'flex';
-    
-    // Mostrar datos de ejemplo si hay error
-    mostrarMonedas(datosEjemplo);
+        console.log('✅ Datos actualizados');
+    }, 800);
 }
 
 // Event Listeners
-refreshBtn.addEventListener('click', cargarDatosPrueba);
+refreshBtn.addEventListener('click', cargarDatos);
 
 // Cargar datos iniciales
 document.addEventListener('DOMContentLoaded', () => {
-    cargarDatosPrueba();
+    cargarDatos();
     
     // Auto-actualizar cada 30 segundos
-    setInterval(cargarDatosPrueba, 30000);
-});
-
-// Detectar visibilidad de la página
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        cargarDatosPrueba();
-    }
+    setInterval(cargarDatos, 30000);
 });
