@@ -1,35 +1,31 @@
 // ============================================
-// FRONTEND CON DATOS DE PRUEBA
+// DATOS DE PRUEBA PARA SAN CAYETANO
 // ============================================
 
-// Datos de ejemplo (simulan la API)
+// Datos de ejemplo con COMPRA y VENTA
 const datosEjemplo = {
     "USD": {
-        "valor": "6.850,00",
+        "compra": "6.820",
+        "venta": "6.850",
         "tendencia": "subiendo",
         "nombre": "Dólar Americano",
         "bandera": "🇺🇸",
         "actualizado": new Date().toLocaleTimeString('es-PY')
     },
     "BRL": {
-        "valor": "1.320,50",
+        "compra": "1.310",
+        "venta": "1.320",
         "tendencia": "bajando", 
         "nombre": "Real Brasileño",
         "bandera": "🇧🇷",
         "actualizado": new Date().toLocaleTimeString('es-PY')
     },
-    "EUR": {
-        "valor": "7.420,75",
-        "tendencia": "subiendo",
-        "nombre": "Euro",
-        "bandera": "🇪🇺",
-        "actualizado": new Date().toLocaleTimeString('es-PY')
-    },
-    "ARS": {
-        "valor": "7,85",
+    "BRL•USD": {
+        "compra": "5,18",
+        "venta": "5,22",
         "tendencia": "estable",
-        "nombre": "Peso Argentino",
-        "bandera": "🇦🇷",
+        "nombre": "Real Paralelo",
+        "bandera": "🇧🇷🇺🇸",
         "actualizado": new Date().toLocaleTimeString('es-PY')
     }
 };
@@ -40,8 +36,8 @@ const errorMensaje = document.getElementById('error-mensaje');
 const refreshBtn = document.getElementById('refresh-btn');
 const actualizacionTexto = document.getElementById('actualizacion-texto');
 
-// Función para crear una tarjeta de moneda
-function crearTarjetaMoneda(codigo, datos) {
+// Función para crear una fila de moneda
+function crearFilaMoneda(codigo, datos) {
     return `
         <div class="moneda-card ${datos.tendencia}">
             <div class="moneda-info">
@@ -51,8 +47,9 @@ function crearTarjetaMoneda(codigo, datos) {
                     <div class="codigo">${codigo}</div>
                 </div>
             </div>
-            <div class="moneda-valor">
-                <div class="valor">${datos.valor}</div>
+            <div class="valor-compra">${datos.compra}</div>
+            <div class="valor-venta">${datos.venta}</div>
+            <div class="tendencia-container">
                 <div class="tendencia ${datos.tendencia}">
                     <span class="material-icons">
                         ${datos.tendencia === 'subiendo' ? 'arrow_upward' : 
@@ -70,8 +67,13 @@ function crearTarjetaMoneda(codigo, datos) {
 function mostrarMonedas(datos) {
     let html = '';
     
-    for (const [codigo, info] of Object.entries(datos)) {
-        html += crearTarjetaMoneda(codigo, info);
+    // Orden específico: USD, BRL, BRL•USD
+    const orden = ['USD', 'BRL', 'BRL•USD'];
+    
+    for (const codigo of orden) {
+        if (datos[codigo]) {
+            html += crearFilaMoneda(codigo, datos[codigo]);
+        }
     }
     
     monedasContainer.innerHTML = html;
@@ -79,22 +81,39 @@ function mostrarMonedas(datos) {
     errorMensaje.style.display = 'none';
 }
 
-// Función para simular carga con datos de prueba
+// Función para simular variación de precios
+function variarPrecio(precioStr) {
+    const precio = parseFloat(precioStr.replace('.', '').replace(',', '.'));
+    const variacion = (Math.random() - 0.5) * 10; // ±5
+    const nuevoPrecio = Math.max(0, precio + variacion);
+    
+    if (precioStr.includes(',')) {
+        return nuevoPrecio.toFixed(2).replace('.', ',');
+    }
+    return nuevoPrecio.toFixed(0);
+}
+
+// Función para cargar datos
 function cargarDatosPrueba() {
     // Mostrar estado de carga
     refreshBtn.innerHTML = '<span class="material-icons">autorenew</span> Cargando...';
     refreshBtn.disabled = true;
     
-    // Simular delay de red (1.5 segundos)
+    // Simular delay de red (1 segundo)
     setTimeout(() => {
-        // Aquí normalmente harías fetch a una API real
-        // Por ahora usamos datos de ejemplo
-        
-        // Simular variación aleatoria en los valores
         const datosActualizados = JSON.parse(JSON.stringify(datosEjemplo));
         
-        // Actualizar timestamp
+        // Variar precios ligeramente (simulación realista)
         for (const moneda in datosActualizados) {
+            datosActualizados[moneda].compra = variarPrecio(datosActualizados[moneda].compra);
+            datosActualizados[moneda].venta = variarPrecio(datosActualizados[moneda].venta);
+            
+            // Determinar tendencia basada en cambio
+            const cambio = Math.random();
+            if (cambio > 0.6) datosActualizados[moneda].tendencia = 'subiendo';
+            else if (cambio < 0.4) datosActualizados[moneda].tendencia = 'bajando';
+            else datosActualizados[moneda].tendencia = 'estable';
+            
             datosActualizados[moneda].actualizado = new Date().toLocaleTimeString('es-PY');
         }
         
@@ -104,8 +123,8 @@ function cargarDatosPrueba() {
         refreshBtn.innerHTML = '<span class="material-icons">refresh</span> Actualizar';
         refreshBtn.disabled = false;
         
-        console.log('Datos actualizados (modo prueba)');
-    }, 1500);
+        console.log('✅ Datos actualizados - San Cayetano');
+    }, 1000);
 }
 
 // Función para mostrar error
@@ -124,8 +143,8 @@ refreshBtn.addEventListener('click', cargarDatosPrueba);
 document.addEventListener('DOMContentLoaded', () => {
     cargarDatosPrueba();
     
-    // Auto-actualizar cada 60 segundos
-    setInterval(cargarDatosPrueba, 60000);
+    // Auto-actualizar cada 30 segundos
+    setInterval(cargarDatosPrueba, 30000);
 });
 
 // Detectar visibilidad de la página
