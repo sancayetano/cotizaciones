@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💱 san cayetano</title>
+    <title>💱 Cambios San Cayetano</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💱</text></svg>">
@@ -11,8 +11,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>San Cayetano</h1>
-            <p class="subtitle">COTIZACIONES</p>
+            <h1>💱 Cambios San Cayetano</h1>
+            <p class="subtitle">Cotizaciones actualizadas de monedas</p>
             <button id="refresh-btn" class="refresh-btn">
                 <span class="material-icons">refresh</span>
                 Actualizar
@@ -23,16 +23,27 @@
             ⚠️ Error cargando datos. Reintentando...
         </div>
 
-        <div class="monedas-container" id="monedas-container">
-            <!-- Las monedas se cargarán aquí -->
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Cargando cotizaciones...</p>
+        <!-- TABLA DE MONEDAS -->
+        <div class="tabla-container">
+            <div class="tabla-header">
+                <div class="col-moneda">Moneda</div>
+                <div class="col-compra">Compra</div>
+                <div class="col-venta">Venta</div>
+                <div class="col-tendencia">Variación</div>
+            </div>
+
+            <div class="monedas-container" id="monedas-container">
+                <!-- Las monedas se cargarán aquí -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando cotizaciones...</p>
+                </div>
             </div>
         </div>
 
         <div class="footer">
             <p id="actualizacion-texto">Última actualización: --:--:--</p>
+            <p class="disclaimer">Los valores son referenciales y pueden variar</p>
         </div>
     </div>
 
