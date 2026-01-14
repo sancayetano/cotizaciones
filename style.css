@@ -1,0 +1,252 @@
+/* Estilos básicos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.subtitle {
+    opacity: 0.9;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+/* Botón de actualizar */
+.refresh-btn {
+    background: white;
+    color: #4f46e5;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.refresh-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Alertas de error */
+.error-alert {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 12px 20px;
+    margin: 0 20px 20px;
+    border-radius: 10px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Contenedor de monedas */
+.monedas-container {
+    padding: 0 20px;
+}
+
+/* Tarjeta de moneda */
+.moneda-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 5px solid #94a3b8;
+    transition: all 0.3s ease;
+}
+
+.moneda-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.moneda-card.subiendo {
+    border-left-color: #10b981;
+    background: linear-gradient(to right, #f0fdf4, #f8fafc);
+}
+
+.moneda-card.bajando {
+    border-left-color: #ef4444;
+    background: linear-gradient(to right, #fef2f2, #f8fafc);
+}
+
+.moneda-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bandera {
+    font-size: 2.5rem;
+}
+
+.moneda-texto h3 {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    color: #1e293b;
+}
+
+.moneda-texto .codigo {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.moneda-valor {
+    text-align: right;
+}
+
+.valor {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 5px;
+}
+
+.tendencia {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.tendencia.subiendo {
+    color: #10b981;
+    background: #d1fae5;
+}
+
+.tendencia.bajando {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.tendencia.estable {
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #4f46e5;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Footer */
+.footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 20px;
+    color: #64748b;
+}
+
+#actualizacion-texto {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.disclaimer {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.disclaimer a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.disclaimer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        border-radius: 12px;
+    }
+    
+    .header {
+        padding: 20px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .moneda-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .moneda-valor {
+        text-align: left;
+        width: 100%;
+    }
+}
