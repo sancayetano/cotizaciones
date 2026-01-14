@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💱 Cambios San Cayetano</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💱</text></svg>">
 </head>
 <body>
@@ -13,14 +12,6 @@
         <div class="header">
             <h1>💱 Cambios San Cayetano</h1>
             <p class="subtitle">Cotizaciones actualizadas de monedas</p>
-            <button id="refresh-btn" class="refresh-btn">
-                <span class="material-icons">refresh</span>
-                Actualizar
-            </button>
-        </div>
-
-        <div class="error-alert" id="error-mensaje">
-            ⚠️ Error cargando datos. Reintentando...
         </div>
 
         <!-- TABLA DE MONEDAS -->
@@ -29,7 +20,6 @@
                 <div class="col-moneda">Moneda</div>
                 <div class="col-compra">Compra</div>
                 <div class="col-venta">Venta</div>
-                <div class="col-tendencia">Variación</div>
             </div>
 
             <div class="monedas-container" id="monedas-container">
@@ -42,8 +32,10 @@
         </div>
 
         <div class="footer">
+            <button id="refresh-btn" class="refresh-btn">
+                Actualizar
+            </button>
             <p id="actualizacion-texto">Última actualización: --:--:--</p>
-            <p class="disclaimer">Los valores son referenciales y pueden variar</p>
         </div>
     </div>
 
