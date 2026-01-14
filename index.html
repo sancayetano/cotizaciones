@@ -1,36 +1,42 @@
-<!-- index.html simplificado para empezar -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Cambios</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        .moneda { background: #f0f0f0; padding: 15px; margin: 10px; border-radius: 8px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💱 san cayetano</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💱</text></svg>">
 </head>
 <body>
-    <h1>💱 Cambios Nortecambios</h1>
-    <div id="monedas">Cargando...</div>
-    
-    <script>
-        // Datos de prueba - luego cambiarás por el backend real
-        const monedas = [
-            {codigo: 'USD', nombre: 'Dólar Americano', valor: '6.560,00', tendencia: 'up'},
-            {codigo: 'BRL', nombre: 'Real Brasileño', valor: '1.250,00', tendencia: 'down'}
-        ];
-        
-        function mostrarMonedas() {
-            let html = '';
-            monedas.forEach(m => {
-                html += `<div class="moneda">
-                    <h3>${m.nombre} (${m.codigo})</h3>
-                    <p><strong>${m.valor}</strong> ${m.tendencia === 'up' ? '📈' : '📉'}</p>
-                </div>`;
-            });
-            document.getElementById('monedas').innerHTML = html;
-        }
-        
-        mostrarMonedas();
-    </script>
+    <div class="container">
+        <div class="header">
+            <h1>💱 Cambios de Moneda</h1>
+            <p class="subtitle">Valores actualizados</p>
+            <button id="refresh-btn" class="refresh-btn">
+                <span class="material-icons">refresh</span>
+                Actualizar
+            </button>
+        </div>
+
+        <div class="error-alert" id="error-mensaje">
+            ⚠️ Error cargando datos. Reintentando...
+        </div>
+
+        <div class="monedas-container" id="monedas-container">
+            <!-- Las monedas se cargarán aquí -->
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando cotizaciones...</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p id="actualizacion-texto">Última actualización: --:--:--</p>
+            <p class="disclaimer">Fuente: <a href="https://www.nortecambios.com.py" target="_blank">nortecambios.com.py</a> • Proyecto no oficial</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
